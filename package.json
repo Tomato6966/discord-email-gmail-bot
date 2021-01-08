@@ -1,0 +1,16 @@
+{
+  "name": "mailbot",
+  "version": "1.0.0",
+  "description": "A bot to send email to a discord server",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "William Dann",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "imap": "^0.8.19",
+    "node-imap": "^0.9.6"
+  }
+}

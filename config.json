@@ -1,0 +1,33 @@
+{
+    "emailclient": {
+        "user": "example@webmail.com",
+        "password": "yourpassword to logintothemail",
+        "host": "imap.gmail.com",
+        "port": "993",
+        "tls": true,
+        "options": {               "_comment_": "These are the search options for the EMAILCLIENT",
+            "FROM": "example@webmail.com",
+            "TO": "",
+            "SUBJECT": "",
+            "DATE": ""
+        },
+        "loop_check_time_in_min": 1,     "_comment_": "0 = no Loop"
+    },
+    
+    "token": "Nzg2OTYy20912ujEwNDE4.X9OBASDA.82bPzcn4MK9wsAy0QWyspdq1mac",
+    "channel": "782293879475011664",
+    "embed": {
+        "color": "#f4ff00",
+        "Thumbnail": "",
+        "Footer": {
+            "ALLOW": "true",
+            "icon": "",
+            "text": ""
+        },
+        "Author": {
+            "ALLOW": "true",
+            "icon": "",
+            "text": ""
+        }
+    }
+}
