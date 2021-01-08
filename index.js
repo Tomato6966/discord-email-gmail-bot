@@ -1,113 +1,120 @@
-//CONFIGURATION 
-//EMBED SETUP
-const Imap = require('node-imap');
-const inspect = require('util').inspect;
-const fs  = require('fs');
-const Discord  = require('discord.js');
+const Discord = require("discord.js");
 const client = new Discord.Client();
-var config = require('./config.json');
-//CREATE THE EMAIL CLIENT
-var imap = new Imap({
+client.login("NzQ4MDk2MTcwNjk3NTU1OTY5.X0Yc2g.tT4pFNWNqrzRhz7Q8yjMty9vZW4");
+const OLDMAILS = new Map();
+client.on("ready", () => {
+    console.log("Bot is ready 2 use");
+    OLDMAILS.set("KEY", "something");
+});
+const Imap = require("node-imap");
+const inspect = require("util").inspect;
+const fs = require("fs");
+const config = require("./config.json")
+
+const imap = new Imap({
     user: config.emailclient.user,
     password: config.emailclient.password,
-    host: config.emailclient.host,
-    port: config.emailclient.port,
-    tls: config.emailclient.tls
+    host: "imap.gmail.com",
+    port: 993,
+    tls: true,
 });
-const OLDMAILS = new Map(); 
-///EVENTS
 
-client.login(config.token); //login into the bot
-//log when ready..
-client.on("ready", () => {
-    console.log("Bot is ready, logging in to email account...")
-    OLDMAILS.set("LatestMail", "Unasdaweuhau2qehdouwhjnb2ß7sadg2");
-    /* You can add code here if you want */
-});
-//a Function for calling the Bot
-function openInbox(callback) {
-    imap.openBox('INBOX', true, callback);
+function openInbox(callback){
+   imap.openBox("INBOX", true, callback); 
 }
-  
-// Send the newest message to discord
-function sendNewest() {
+function sendNewest(){
     openInbox(function(err, box) {
-        if (err) throw err; //if an error occurs show it
-        //THE SEARCH OPTIONS FROM THE CONFIG FILE
-        var FROM = config.emailclient.options.FROM; 
-        var TO = config.emailclient.options.TO;
-        var SUBJECT = config.emailclient.options.SUBJECT;
-        var DATE = config.emailclient.options.DATE;
-        if(!FROM) FROM = "FROM"; //if no search option replace it
-        if(!TO) TO = "TO";//if no search option replace it
-        if(!SUBJECT) SUBJECT = "SUBJECT";//if no search option replace it
-        if(!DATE) DATE = "DATE";//if no search option replace it
-        
-        //fetch the latest email
-        var f = imap.seq.fetch(box.messages.total + ':*', { //with the options
+        if(err) throw err;
+        var buffer2 = "";
+        var buffer = ""; 
+        let i = 0;
+        let embed = new Discord.MessageEmbed()
+        .setColor("RED")
+        .setTitle("NEW EMAIL")
+     
+        var f = imap.seq.fetch(box.messages.total + ":*", {
             id: 1,
-            bodies: [`HEADER.FIELDS (${FROM} ${TO} ${SUBJECT} ${DATE})`, '1'],
+            bodies: [`HEADER.FIELDS (FROM TO SUBJECT DATE)` , "1"],
             struct: true
         })
-        //when the fethc is finished
-        f.on('message', (message, index) => {
-            message.on('body', (stream, info) => { //create the message infos
-                var buffer = '', count = 0;
-                var prefix = '(#' + index + ') ';
+        var f2 = imap.seq.fetch(box.messages.total + ":*", {
+            id: 1,
+            bodies: [`HEADER.FIELDS (FROM TO SUBJECT DATE)`],
+            struct: true
+        })
+        f2.on("message", (message, index) => {
+            message.on("body", (stream, info) => {
+          
+                var count = 0;
+                var prefix = "(#" + index + ")";
 
-                stream.on('data', function(chunk) {
-                    count += chunk.length; //add a length
-                    buffer += chunk.toString('utf8'); //add the plain information text
-                });
-                //when its finished, getting the information
-                stream.once('end', async function() {
-                    var channel = await client.channels.fetch(config.channel); //Define the Channel
-                    let embed = new Discord.MessageEmbed() //create the Embed with the config options
-                    .setColor("BLACK")
-                    if(config.embed.color) embed.setColor(config.embed.color);
-                    if(config.embed.Footer){
-                        if(config.embed.Footer.text) embed.setFooter(config.embed.Footer.text, config.embed.Footer.icon);
-                        else embed.setFooter(client.user.username, channel.guild.iconURL())
-                    }
-                    if(config.embed.Author){
-                        if(config.embed.Author.text) embed.setAuthor(config.embed.Author.text, config.embed.Author.icon);
-                        else embed.setAuthor(client.user.username, channel.guild.iconURL())
-                    }
-                    if(config.embed.Thumbnail) embed.setThumbnail(config.embed.Thumbnail)
-                    if(config.emailclient.options.FROM) embed.setTitle("New Email from: `" + FROM + "`");
-                    else {
-                        embed.setTitle("New Email");
-                    }
-                    embed.setDescription(buffer)
-                    channel.send(embed); //Send the Embed
-                });
+                stream.on("data", function(chunk) {
+                    count += chunk.length;
+                    buffer2 += chunk.toString("utf8");
+                })
 
-            });
-        });
-        
-        f.once('error', function(err) { //when an error happens do this
-            console.log('Fetch error: ' + err);
-        });
-        f.once('end', function() {
-            console.log('Done fetching all messages!');
-        });
-    });
+                stream.once("end", async function() {
+                    i++;
+                    runit()
+                })
+            })
+        })
+        f.on("message", (message, index) => {
+            message.on("body", (stream, info) => {
+          
+                var count = 0;
+                var prefix = "(#" + index + ")";
 
+                stream.on("data", function(chunk) {
+                    count += chunk.length;
+                    buffer += chunk.toString("utf8");
+                })
+
+                stream.once("end", async function() {
+                    i++;
+                    runit()
+                })
+            })
+        })
+        async function runit(){
+            if(i==2){
+            var themsg = buffer2 + buffer;
+            var channel = await client.channels.fetch("797043865567625308");     
+            if(themsg === OLDMAILS.get("KEY")){ 
+                return console.log("MULTIPLE EMAILS ARE THE SAME NO RESULT HERE AGAIN THE BUFFER: \n" + buffer)
+            }
+            else{
+                OLDMAILS.set("KEY", themsg)
+            }
+            if(themsg.length > 2000){
+                embed.setDescription(themsg.substr(0, 2000) + "...")
+            }
+            embed.setDescription(themsg)
+            channel.send(embed);
+            }
+        }
+        f.on("error", function(err){
+            console.log(err)
+        });
+        f.on("end", function(){
+            console.log("FINSHED!")
+        });
+    })
 }
-//once imap is ready, call the functions
-imap.on('ready',async function() {
-    while(Number(config.emailclient.loop_check_time_in_min) !== 0)
-    {   console.log("fetching emails")
+imap.on("ready", async function(){
+    while( 1 !== 0 )
+    {
+        console.log("fetching mails");
         await sendNewest();
-        await delay(Number(config.emailclient.loop_check_time_in_min)*1000*60);
+        await delay(1*60*1000)
     }
-});
-//connect to the imap client
+})
+
 imap.connect();
-//delay function
-function delay (delayInms) {
-    return new Promise(resolve => {
-        setTimeout(() => {
+
+function delay (delayInms){
+    return new Promise( resolve => {
+        setTimeout(()=>{
             resolve(2);
         }, delayInms);
     });
