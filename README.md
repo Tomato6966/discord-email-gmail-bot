@@ -14,7 +14,9 @@ Send gmail messages to your discord channel, or other emails TUTORIAL REPO
 
  **2.** Download this repo and unzip it    |    or git clone it
  
- **3.** Install all of the packages with **`npm install`**     |  the packages are   **`npm install discord.js`**
+ **3.** Install all of the packages with **`npm install`**     |  the packages are   **`npm install discord.js node-imap fs`**
+ 
+ **3.1** Fill in the parameters, RIGHT in config.json AND **turn on** in your GOOGLE account settings, that 3rd party apps can get access to it!
  
  **4.** start the bot with **`node index.js`**
 
