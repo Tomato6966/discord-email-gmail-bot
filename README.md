@@ -35,6 +35,9 @@ sudo apt-get install build-essential
  
  **4.** start the bot with **`node index.js`**
 
+# NOTE THIS PLEASE!
+> IF YOU WANNA SEE BASE64 EMAILS like PAYPAL then UNCOMMENt line **77** in `emails.js` --> `theBuffer = Buffer.from(theBuffer, "base64")`
+
 #### **NOTE:**
 
 *If you are having errors/problems with starting delete the package.json file and do, before you install the packages `npm init`*
