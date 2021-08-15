@@ -123,12 +123,14 @@ function sendNewest() {
    * Once Imap is READY and config loop check time per minute is defined loop through the Newest Emails
 */
 imap.on('ready', async function() {
-    while(Number(config.emailclient.loop_check_time_in_min) !== 0)
+    let check = Number(config.emailclient.loop_check_time_in_min);
+    if(!check || check == 0) check = 1;
+    for(let i = 1; i > 0; i++)
     {   
         try {
             console.log("fetching emails")
             await sendNewest();
-            await delay(Number(config.emailclient.loop_check_time_in_min)*1000*60);
+            await delay(check*1000*60);
         } catch(e){ console.log(e.stack ? e.stack : e); }
     }
 });
