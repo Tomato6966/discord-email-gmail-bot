@@ -80,7 +80,7 @@ function sendNewest() {
                             try {
                                 count += chunk.length; //add a length
                                 buffer += chunk.toString('utf8'); //add the plain information text
-                            } catch(e){ console.log(e.stack); }
+                            } catch(e){ console.log(e.stack ? e.stack : e); }
                         });
                         //when its finished, getting the information
                         stream.once('end', async function() {
@@ -103,11 +103,11 @@ function sendNewest() {
                                 }
                                 embed.setDescription(buffer)
                                 channel.send(embed); //Send the Embed
-                            } catch(e){ console.log(e.stack); }
+                            } catch(e){ console.log(e.stack ? e.stack : e); }
                         }); //end of stream.once("end"
-                    } catch(e){ console.log(e.stack); }
+                    } catch(e){ console.log(e.stack ? e.stack : e); }
                     }); //end of stream.on("body"
-                } catch(e){ console.log(e.stack); }
+                } catch(e){ console.log(e.stack ? e.stack : e); }
             }); //end of f.on("message"
             f.on('error', function(err) { //when an error happens do this
                 console.log('Fetch error: ' + err);
@@ -115,9 +115,9 @@ function sendNewest() {
             f.on('end', function() {
                 console.log('Done fetching all messages!');
             });//end of f.on("end"
-        } catch(e){ console.log(e.stack); }
-    });//end of openInbox
-}//end of function SendNewest
+      });//end of openInbox
+    } catch(e){ console.log(e.stack ? e.stack : e); }
+  }//end of function SendNewest
 /**
    * @INFO - Imap#ReadyEvent
    * Once Imap is READY and config loop check time per minute is defined loop through the Newest Emails
@@ -129,7 +129,7 @@ imap.on('ready', async function() {
             console.log("fetching emails")
             await sendNewest();
             await delay(Number(config.emailclient.loop_check_time_in_min)*1000*60);
-        } catch(e){ console.log(e.stack); }
+        } catch(e){ console.log(e.stack ? e.stack : e); }
     }
 });
 /**
@@ -150,7 +150,7 @@ function delay (delayInms) {
 }
 /**
    * @INFO
-   * This Bot got made for Milrato Development https://github.com/Milrato-Development
+   * This Bot got made for Milrato Development https://milrato.eu | discord.gg/milrato
    * @INFO
    * This Bot is made and Coded by Tomato#6966  https://github.com/Tomato6966
    * @INFO
