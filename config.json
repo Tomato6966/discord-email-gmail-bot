@@ -20,12 +20,12 @@
         "color": "#f4ff00",
         "Thumbnail": "",
         "Footer": {
-            "ALLOW": "true",
+            "ALLOW": false,
             "icon": "",
             "text": ""
         },
         "Author": {
-            "ALLOW": "true",
+            "ALLOW": false,
             "icon": "",
             "text": ""
         }
