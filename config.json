@@ -5,13 +5,14 @@
         "host": "imap.gmail.com",
         "port": "993",
         "tls": true,
-        "options": {               "_comment_": "These are the search options for the EMAILCLIENT",
+        "options": {               "_comment_": "These are the search options for the Emails to check!",
             "FROM": "example@webmail.com",
             "TO": "",
             "SUBJECT": "",
             "DATE": ""
         },
-        "loop_check_time_in_min": 1,     "_comment_": "0 = no Loop"
+        "INPUT_BOX": "Inbox", "comment": "If you are having a subbox / label where the emails should be found type them, Example: [Gmail]/Spam, Milrato/Paypal,  INBOX   | YOU WILL SEE ALL AVAILABLE BOXES WHEN STARTING THE EMAIL CLIENT!",
+        "loop_check_time_in_min": 1
     },
     
     "token": "Nzg2OTYy20912ujEwNDE4.X9OBASDA.82bPzcn4MK9wsAy0QWyspdq1mac",
