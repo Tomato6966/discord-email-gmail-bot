@@ -88,11 +88,11 @@ function sendNewest() {
                                 var channel = await client.channels.fetch(config.channel); //Define the Channel
                                 let embed = new Discord.MessageEmbed() //create the Embed with the config options
                                 if(config.embed.color) embed.setColor(config.embed.color);
-                                if(config.embed.Footer){
+                                if(config.embed.Footer.ALLOW){
                                     if(config.embed.Footer.text) embed.setFooter(config.embed.Footer.text, config.embed.Footer.icon);
                                     else embed.setFooter(client.user.username, channel.guild.iconURL())
                                 }
-                                if(config.embed.Author){
+                                if(config.embed.Author.ALLOW){
                                     if(config.embed.Author.text) embed.setAuthor(config.embed.Author.text, config.embed.Author.icon);
                                     else embed.setAuthor(client.user.username, channel.guild.iconURL())
                                 }
