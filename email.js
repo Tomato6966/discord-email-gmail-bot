@@ -18,7 +18,7 @@ module.exports = async (client, imap) => {
     */
     await imap.connect();
     //Log information
-    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: CONNECTED TO THE IMAP")
+    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: CONNECTED TO THE IMAP", "\x1b[0m")
     /**
      * @INFO - OpenInbox(callback)
      * This function opens the Inbox for giving information
@@ -71,13 +71,11 @@ module.exports = async (client, imap) => {
                                 //when its finished, getting the information
                                 stream.once("end", async function () {
                                     try {
-                                        //format the buffer
-                                        if(Buffer.from(theBuffer, 'base64').toString('base64') !== theBuffer)
-                                        theBuffer = Buffer.from(theBuffer, "base64")
-                                    
+                                        //format the buffer needed for paypal!
+                                        //theBuffer = Buffer.from(theBuffer, "base64")
                                         //Return if the latestMail is the same!
                                         if (client.OldMails_db.get("LatestMail", "data") === prefix)
-                                            return console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[33m", "Latest Email already sent!");
+                                            return console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[33m", "Latest Email already sent!", "\x1b[0m");
                                         var channel = await client.channels.fetch(config.channel); //Define the Channel
                                         let embed = new Discord.MessageEmbed() //create the Embed with the config options
                                         if (config.embed.color && config.embed.Thumbnail.color > 0) embed.setColor(config.embed.color);
@@ -110,17 +108,17 @@ module.exports = async (client, imap) => {
                                             //create an attachment, and send it into the chat
                                             const attachment = new Discord.MessageAttachment(filename); //send it as an attachment
                                             await channel.send(attachment).then(msg => {
-                                                try {
-                                                    setTimeout(() => {
+                                                setTimeout(() => {
+                                                    try {
                                                         fs.unlinkSync(filename);
-                                                    }, 5000);
-                                                } catch (e) {
-                                                    console.log(e.stack ? e.stack : e);
-                                                }
+                                                    } catch (e) {
+                                                        console.log(e.stack ? e.stack : e);
+                                                    }
+                                                }, 5000);
                                             })
                                             //Console.log the output
                                             const d = new Date();
-                                            console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", `Sent a new Email at: ${d.getDate()}/${d.getMonth()}/${d.getFullYear()} | ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
+                                            return console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", `Sent a new Email at: ${d.getDate()}/${d.getMonth()}/${d.getFullYear()} | ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`, "\x1b[0m");
                                         } catch (e) {
                                             console.log(e.stack ? e.stack : e);
                                         }
@@ -141,7 +139,7 @@ module.exports = async (client, imap) => {
                     console.log("Fetch error: " + err);
                 }); //end of f.on("error"
                 f.on("end", function () {
-                    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "Done fetching all messages!");
+                    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "Done fetching all messages!", "\x1b[0m");
                 }); //end of f.on("end"
             }); //end of openInbox
         } catch (e) {
@@ -155,7 +153,7 @@ module.exports = async (client, imap) => {
     imap.on("ready", async function () {
         imap.getBoxes(async function (err, boxes) {
             if(err) console.log(err)
-            else console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "Boxes registered!");
+            else console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "Boxes registered!", "\x1b[0m");
             
             let sboxes = []
             for(const [key, value] of Object.entries(boxes)){
@@ -166,14 +164,14 @@ module.exports = async (client, imap) => {
                     }
                 }
             }
-            console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "ALL AVAILABLE BOXES FOR THE OPTION: emailclient.INPUT_BOX");
+            console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[32m", "ALL AVAILABLE BOXES FOR THE OPTION: emailclient.INPUT_BOX", "\x1b[0m");
             console.log(sboxes.join(", "))
             //console.log(boxes)
             let check = Number(config.emailclient.loop_check_time_in_min);
             if (!check || check == 0) check = 1;
             for (let i = 1; i > 0; i++) {
                 try {
-                    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[33m", "Fetching emails")
+                    console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[33m", "Fetching emails", "\x1b[0m")
                     await sendNewest();
                     await delay(check * 1000 * 60);
                 } catch (e) {
