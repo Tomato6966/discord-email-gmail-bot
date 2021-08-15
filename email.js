@@ -71,8 +71,11 @@ module.exports = async (client, imap) => {
                                 //when its finished, getting the information
                                 stream.once("end", async function () {
                                     try {
+                                        
                                         //format the buffer needed for paypal!
+                                        
                                         //theBuffer = Buffer.from(theBuffer, "base64")
+                                        
                                         //Return if the latestMail is the same!
                                         if (client.OldMails_db.get("LatestMail", "data") === prefix)
                                             return console.log("\x1b[36m%s\x1b[0m", " [EMAIL CLIENT] :: ", "\x1b[33m", "Latest Email already sent!", "\x1b[0m");
