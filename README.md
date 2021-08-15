@@ -16,7 +16,7 @@ npm i -g --add-python-to-path --vs2015 --production windows-build-tools
 // Then run:
 npm i -g node-gyp@latest
 ```
-#DEBAIN PRE REQUIREMENTS!
+# DEBAIN PRE REQUIREMENTS!
 ```
 sudo apt-get install build-essential
 ```
