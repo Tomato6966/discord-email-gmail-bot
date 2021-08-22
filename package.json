@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha"
+    "node": "14.15.4"
   },
   "author": "William Dann",
   "license": "ISC",
@@ -12,5 +13,6 @@
     "discord.js": "^12.5.1",
     "imap": "^0.8.19",
     "node-imap": "^0.9.6"
+    "node": "14.15.4"
   }
 }
